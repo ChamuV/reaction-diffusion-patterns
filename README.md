@@ -10,9 +10,12 @@ $$
 \cos\left(\frac{n\pi x}{L_x}\right)\cos\left(\frac{m\pi y}{L_y}\right),
 $$
 
+where $n,m \in \mathbb{N}$ are spatial mode indices, $x \in [0,L_x]$ and $y \in [0,L_y]$ are spatial coordinates, and $L_x, L_y$ denote the domain lengths in each direction.
+
+These correspond to eigenfunctions of the Laplacian under Neumann boundary conditions.
+
 Thus, only discrete spatial modes are admissible, and pattern formation is constrained by the domain geometry. This plays a central role in determining which patterns can form in practice.
 
----
 
 ## Example
 
@@ -23,42 +26,38 @@ Thus, only discrete spatial modes are admissible, and pattern formation is const
 
 This animation shows the evolution of the Schnakenberg system from a small perturbation into a spatially structured steady state.
 
----
 
 ## Models implemented
 
 ### Schnakenberg model
-\[
+$$
 f(u,v) = a - u + u^2 v, \quad g(u,v) = b - u^2 v
-\]
+$$
 
 - Closed-form steady state
 - Standard benchmark for Turing instability
 
----
 
 ### Substrate–Inhibitor model
-\[
+$$
 f(u,v) = a - u - \frac{\rho u v}{1 + u + K u^2}, \quad
 g(u,v) = \alpha(b - v) - \frac{\rho u v}{1 + u + K u^2}
-\]
+$$
 
 - Nonlinear saturating inhibition
 - Strong parameter sensitivity
 - Steady state computed numerically
 
----
 
 ### Gierer–Meinhardt model
-\[
+$$
 f(u,v) = a - b u + \frac{u^2}{v}, \quad
 g(u,v) = u^2 - v
-\]
+$$
 
 - Strong activator–inhibitor feedback
 - Produces sharp localised structures
 
----
 
 ## Numerical method (AB2–AM2 scheme)
 
@@ -69,22 +68,21 @@ All simulations use a second-order semi-implicit scheme:
 
 The scheme is:
 
-\[
+$$
 U^{n+1} = M^{-1} \left( P U^n + \frac{3}{2}F(U^n) - \frac{1}{2}F(U^{n-1}) \right)
-\]
+$$
 
 where:
-- \( M = I - \frac{\Delta t}{2}L \)
-- \( P = I + \frac{\Delta t}{2}L \)
-- \( L \) is the discrete Laplacian
-- \( F(U) \) represents reaction terms
+- $M = I - \frac{\Delta t}{2}L$
+- $P = I + \frac{\Delta t}{2}L$
+- $L$ is the discrete Laplacian
+- $F(U)$ represents the reaction terms
 
 This provides:
 - stability for stiff diffusion terms  
 - second-order accuracy in time  
 - efficient sparse linear solves  
 
----
 
 ## What this project demonstrates
 
@@ -93,12 +91,11 @@ This provides:
 - Mode selection in bounded domains
 - Nonlinear saturation of patterns
 - Dependence on:
-  - diffusion ratio \( d \)
-  - domain size \( (L_x, L_y) \)
+  - diffusion ratio $d$
+  - domain size $(L_x, L_y)$
   - aspect ratio
   - initial perturbation
 
----
 
 ## Repository structure
 
@@ -145,8 +142,6 @@ LICENSE
 README.md
 ```
 
----
-
 ## Running a simulation
 
 Example (2D Schnakenberg):
@@ -176,24 +171,20 @@ solver = AB2AM2Solver2D(
 t, U, V, x, y, X, Y = solver.run(p_type="random")
 ```
 
----
-
 ## Key observations
 
 - Only a **band of spatial modes** becomes unstable, as predicted by the dispersion relation  
-- Domain geometry restricts admissible modes, so the observed pattern depends strongly on \(L_x, L_y\) and aspect ratio  
-- The final pattern is determined by:
-  - fastest-growing modes during the linear instability stage  
-  - nonlinear interactions and saturation in the fully developed regime  
-- The Schnakenberg model produces stable spot and stripe regimes, while the substrate–inhibitor and Gierer–Meinhardt systems exhibit greater sensitivity and more fragmented or localised structures  
-
----
+- Pattern formation depends on the interplay between the **diffusion ratio** $d$, the **domain geometry** (including size $(L_x, L_y)$ and aspect ratio), and the **nonlinear reaction dynamics**, which together determine which spatial structures can emerge  
+- Increasing the diffusion ratio typically leads to patterns with larger spatial separation and more regular structure  
+- Different models exhibit distinct behaviour:  
+  - the Schnakenberg model produces relatively regular spot and stripe patterns  
+  - the Gierer–Meinhardt model forms sharper, more localised structures  
+  - the substrate–inhibitor model is more sensitive to parameter changes and often produces more irregular patterns  
 
 ## License
 
 This project is licensed under the MIT License (see `LICENSE` file for details).
 
----
 
 ## Author
 
